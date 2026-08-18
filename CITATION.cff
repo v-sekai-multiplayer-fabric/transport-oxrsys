@@ -117,21 +117,3 @@ references:
       would be restricted under the third-party licence policy this workspace
       follows, so a build that redistributes binaries must check which one it
       linked rather than assume the default.
-
-  # ── What is deliberately absent ──────────────────────────────────────────────
-  - type: software
-    title: "PSVR2 Linux Adapter Project"
-    authors:
-      - name: unterschall
-    year: 2026
-    license: GPL-2.0
-    url: "https://github.com/unterschall/psvr2-linux-adapter"
-    notes: >
-      Not used, not vendored, and not linked. It is recorded because it is the
-      obvious place to look for PlayStation VR2 support and the reason it is not
-      here needs to be findable: it is a Linux kernel module, so it does not
-      build on macOS at all, and it is GPL-2.0, which the licence policy calls
-      restricted because it taints what links it. Merging it would take this
-      MPL-2.0 tree with it. PSVR2 support for this runtime belongs in a separate
-      repository that talks to this one across a process boundary, written from
-      the published USB behaviour rather than from that source.
