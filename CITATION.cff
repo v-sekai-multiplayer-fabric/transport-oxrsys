@@ -1,0 +1,137 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "transport-oxrsys: an unofficial OpenXR runtime for macOS"
+abstract: >
+  A fork of demonixis/oxrsys, an unofficial OpenXR runtime that a macOS
+  application loads in place of the first-party runtime Apple does not ship. It
+  renders through Metal, encodes the eye buffers, and streams them to a headset
+  client over WiFi or USB; the headset returns head pose, hand joints and
+  controller state. On the hexagon it is a transport layer: it terminates the
+  protocol a headset speaks and triggers an interactor, and it depends on
+  nothing further in. This copy carries work upstream does not, which is why the
+  provenance is stated here rather than read off the fork flag.
+authors:
+  - family-names: Comte
+    given-names: Yannick
+    alias: demonixis
+  - family-names: Lee
+    given-names: "K. S. Ernest (iFire)"
+    email: ernest.lee@chibifire.com
+    orcid: "https://orcid.org/0000-0003-4570-1436"
+version: 1.2.0
+license: MPL-2.0
+repository-code: "https://github.com/v-sekai-multiplayer-fabric/transport-oxrsys"
+keywords:
+  - openxr
+  - macos
+  - metal
+  - virtual-reality
+  - runtime
+
+references:
+
+  # ── What this is a fork of ───────────────────────────────────────────────────
+  - type: software
+    title: "OXRSys Runtime: an unofficial OpenXR runtime"
+    authors:
+      - family-names: Comte
+        given-names: Yannick
+        alias: demonixis
+    year: 2026
+    version: 1.2.0
+    license: MPL-2.0
+    url: "https://github.com/demonixis/oxrsys"
+    notes: >
+      The whole of this tree except what this fork adds. MPL-2.0 is file-level
+      copyleft: a modified file stays MPL-2.0 and the larger work does not have
+      to be, which is what lets this sit beside MIT and Apache-2.0 code here.
+      Upstream's README stays upstream's; Lib.mirrors/0 in infrastructure-logbook
+      records demonixis/oxrsys as this repository's parent for that reason.
+
+  # ── The specification it implements ──────────────────────────────────────────
+  - type: software
+    title: "OpenXR SDK"
+    authors:
+      - name: "The Khronos Group Inc."
+    year: 2026
+    version: release-1.1.57
+    license: Apache-2.0
+    url: "https://github.com/KhronosGroup/OpenXR-SDK"
+    notes: >
+      Fetched by CMake FetchContent, not vendored. Supplies the headers and the
+      loader an application links, which is the surface this runtime is on the
+      other side of. OpenXR is a trademark of The Khronos Group Inc., and this
+      project is not affiliated with, endorsed by or approved by them.
+  - type: software
+    title: "OpenXR Conformance Test Suite"
+    authors:
+      - name: "The Khronos Group Inc."
+    year: 2026
+    license: Apache-2.0
+    url: "https://github.com/KhronosGroup/OpenXR-CTS"
+    notes: >
+      An opt-in lane behind OXRSYS_ENABLE_CTS, off by default, fetched only when
+      it is on. Upstream reports the pinned non-interactive baseline green as of
+      2026-03-17: 63 passed, 36 skipped, 0 failed. Passing the CTS is not the
+      same as being a conformant runtime, which is a Khronos adoption process
+      this project has not been through.
+
+  # ── Libraries the build fetches ──────────────────────────────────────────────
+  - type: software
+    title: "spdlog: fast C++ logging library"
+    authors:
+      - family-names: Melman
+        given-names: Gabi
+    year: 2026
+    version: v1.15.3
+    license: MIT
+    url: "https://github.com/gabime/spdlog"
+  - type: software
+    title: "OpenGL Mathematics (GLM)"
+    authors:
+      - name: "G-Truc Creation"
+    year: 2026
+    version: 1.0.1
+    license: MIT
+    url: "https://github.com/g-truc/glm"
+  - type: software
+    title: "Catch2: a unit testing framework for C++"
+    authors:
+      - name: "Catch2 contributors"
+    year: 2026
+    version: v3.7.1
+    license: BSL-1.0
+    url: "https://github.com/catchorg/Catch2"
+  - type: software
+    title: "FFmpeg"
+    authors:
+      - name: "FFmpeg contributors"
+    year: 2026
+    license: LGPL-2.1-or-later
+    url: "https://ffmpeg.org"
+    notes: >
+      The Linux encoder path and the Qt simulator's video preview only, found
+      through pkg-config and linked dynamically against whatever the system
+      installed. Never vendored and not on the macOS path, which encodes through
+      VideoToolbox. An FFmpeg built with --enable-gpl is GPL-2.0-or-later and
+      would be restricted under the third-party licence policy this workspace
+      follows, so a build that redistributes binaries must check which one it
+      linked rather than assume the default.
+
+  # ── What is deliberately absent ──────────────────────────────────────────────
+  - type: software
+    title: "PSVR2 Linux Adapter Project"
+    authors:
+      - name: unterschall
+    year: 2026
+    license: GPL-2.0
+    url: "https://github.com/unterschall/psvr2-linux-adapter"
+    notes: >
+      Not used, not vendored, and not linked. It is recorded because it is the
+      obvious place to look for PlayStation VR2 support and the reason it is not
+      here needs to be findable: it is a Linux kernel module, so it does not
+      build on macOS at all, and it is GPL-2.0, which the licence policy calls
+      restricted because it taints what links it. Merging it would take this
+      MPL-2.0 tree with it. PSVR2 support for this runtime belongs in a separate
+      repository that talks to this one across a process boundary, written from
+      the published USB behaviour rather than from that source.
